@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_name'] = $Name; // 이름을 세션에 저장
 
             // 메인 페이지로 이동
-            header("Location: main_page.php"); // main_page.html 대신 main_page.php 사용
+            header("Location: main_page.php");
             exit; // 리다이렉트 후 코드 실행 중지
         } else {
             echo "<p style='color:red;'>Invalid membership number. Please try again.</p>";
