@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko"> <!-- 한글 인식용 -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입</title>
+    <meta charset="UTF-8"> <!-- btye단위로 인코딩 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 화면 크기는 사용자의 디스플레이에 따라 변화 -->
+    <title>회원가입</title> <!-- 타이틀 생성 -->
     <style>
         body {
             display: flex;
@@ -50,26 +50,26 @@
     </style>
 </head>
 <body>
-    <h2>회원가입</h2>
-    <form action="signup2.php" method="POST">
+    <h2>회원가입</h2> <!-- 회원 가입 폼 생성 -->
+    <form action="signup2.php" method="POST"> <!-- 입력한 내용 php파일로 전송 -->
         <input type="text" id="사용자아이디" name="사용자아이디" placeholder="아이디를 입력하세요" required>
         <input type="password" id="비밀번호" name="비밀번호" placeholder="비밀번호를 입력하세요" required>
         <input type="text" id="이름" name="이름" placeholder="이름을 입력하세요" required>
         
-        <select id="성별" name="성별" required>
+        <select id="성별" name="성별" required> <!-- 이거는 내용 입력이 아닌 2가지 옵션중에 고르는 것임 -->
             <option value="" disabled selected>성별을 선택하세요</option>
             <option value="남">남</option>
             <option value="여">여</option>
         </select>
-
+        <!-- 생년월일은 달력 형태의 date 입력 type을 선택 -->
         <input type="date" id="생년월일" name="생년월일" required>
-
+        <!-- 회원가입 버튼 누르면 테이블에 저장 -->
         <button type="submit">회원가입</button>
     </form>
-
+    <!-- 아이디가 있는데 회원가입 페이지로 왔다면 이곳을 눌러서 로그인 페이지로 돌아갈 수 있음 -->
     <p>이미 회원이신가요?</p>
-    <a href="index.html">
-        <button type="button">로그인</button>
+    <a href="login2.html"> <!-- 로그인 페이지로 하이퍼링크 생성 -->
+        <button type="button">로그인</button> <!-- 누르면 하이퍼링크로 이동 -->
     </a>
 </body>    
 </html>
