@@ -63,14 +63,97 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>게시물 작성</title> <!-- 제목 설정 -->
+    <style>
+        /* 전체 화면을 중앙 정렬 */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4; /* 부드러운 배경색 추가 */
+        }
+
+        /* 게시글 작성 폼 스타일 */
+        .post-form {
+            width: 500px; /* 폼 크기 설정 */
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* 제목 입력 필드 */
+        .post-form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* 내용 입력 필드 */
+        .post-form textarea {
+            width: 100%;
+            height: 200px; /* 높이를 넉넉하게 설정 */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none; /* 사용자가 크기 조절 못하게 */
+        }
+
+        /* 등록 버튼 */
+        .post-form button {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* 버튼 호버 효과 */
+        .post-form button:hover {
+            background-color: #0056b3;
+        }
+        
+        /* 작성 취소 버튼 스타일 */
+        .cancel-btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ccc;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* 버튼 호버 효과 */
+        .cancel-btn:hover {
+            background-color: #999;
+        }
+
+    </style>
 </head>
 <body>
     <h2>게시물 작성</h2> <!-- 제목 설정 -->
-    <form action="post_create.php" method="POST">
-        <input type="text" name="제목" placeholder="제목 입력" required><br>
-        <textarea name="내용" placeholder="내용 입력" required></textarea><br>
-        <!-- 로그인한 사용자 아이디가 작성자가 됨. -->
-        <button type="submit">등록</button> <!-- 등록 버튼 생성 -->
-    </form>
+    
+    <div class="post-form"> <!-- 폼을 감싸는 박스 -->
+        <form action="post_create.php" method="POST">
+            <input type="text" name="제목" placeholder="제목 입력" required><br>
+            <textarea name="내용" placeholder="내용 입력" required></textarea><br>
+            <button type="submit">등록</button> <!-- 등록 버튼 생성 -->
+        </form>
+        <a href="main_page2.php"><button class="cancel-btn">작성 취소</button></a> <!-- 작성 취소 버튼 -->
+    </div>
 </body>
 </html>

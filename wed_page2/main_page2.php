@@ -1,23 +1,27 @@
 <?php
-session_start(); // 세샨 시작
+session_start(); // 세션 시작
 
-// 오류 출력 활성화
+// 오류 출력 활성화 (개발 시)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// 로그인 상태 확인 (로그인하지 않은 경우 로그인 페이지로 이동)
+// 로그인 여부 확인
 if (!isset($_SESSION['사용자아이디'])) {
     header("Location: login2.php");
     exit();
 }
 
-// DB 연결
+// 로그인한 사용자가 'admin'인지 확인
+$isAdmin = ($_SESSION['사용자아이디'] === 'admin'); 
+
+// DB 연결 정보
 $host = 'localhost';
 $user = 'jo2';
 $password = '12';
 $database = 'yarimasu';
 
+// DB 연결
 $conn = new mysqli($host, $user, $password, $database);
 if ($conn->connect_error) {
     die("DB 연결 실패: " . $conn->connect_error);
@@ -26,7 +30,7 @@ if ($conn->connect_error) {
 // 현재 로그인한 사용자 아이디
 $로그인한사용자 = $_SESSION['사용자아이디'];
 
-// 페이지네이션 설정 - 이거는 잘 모르는 거라 지피티 한테서 가져옴
+// 페이지네이션 설정
 $게시글_페이지당_개수 = 10; // 한 페이지에 보여줄 게시글 수
 $현재페이지 = isset($_GET['page']) ? intval($_GET['page']) : 1; // 현재 페이지 (기본값: 1)
 $시작게시글번호 = ($현재페이지 - 1) * $게시글_페이지당_개수; // LIMIT의 시작 위치
@@ -41,7 +45,7 @@ $전체게시글수 = $total_row['total']; // 총 게시글 개수
 $전체페이지수 = ceil($전체게시글수 / $게시글_페이지당_개수);
 
 // 현재 페이지에 해당하는 게시글 가져오기
-$sql = "SELECT * FROM 게시판 ORDER BY id DESC LIMIT $시작게시글번호, $게시글_페이지당_개수";
+$sql = "SELECT * FROM 게시판 ORDER BY 작성시간 DESC LIMIT $시작게시글번호, $게시글_페이지당_개수";
 $result = $conn->query($sql);
 
 // 게시글 데이터를 배열에 저장
@@ -99,16 +103,16 @@ for ($i = 0; $i < $빈칸수; $i++) {
             padding: 10px; /* 셀 내부 여백 설정 */
             text-align: center; /* 텍스트를 중앙 정렬 */
             word-break: break-word; /* 긴 단어가 있으면 자동 줄바꿈 */
-            width: 33.33%; /* 모든 칸의 너비를 동일하게 설정 */
+            width: 25%; /* 모든 칸의 너비를 동일하게 설정 */
             height: 50px; /* 모든 행(게시글 칸)의 높이를 고정 */
             vertical-align: middle; /* 셀 내부 텍스트를 수직 중앙 정렬 */
         }
-
+        
         /* 페이지네이션 스타일 */
         .pagination {
             margin-top: 20px; /* 페이지네이션 상단 여백 추가 */
         }
-
+        
         .pagination a {
             text-decoration: none; /* 링크의 밑줄 제거 */
             padding: 8px 12px; /* 내부 여백 설정 */
@@ -126,14 +130,14 @@ for ($i = 0; $i < $빈칸수; $i++) {
 
         /* 로그아웃 버튼 스타일 */
         #logoutBtn {
-            position: absolute; /* 절대 위치 지정 */
-            top: 10px; /* 상단에서 10px 떨어진 위치 */
-            right: 10px; /* 우측에서 10px 떨어진 위치 */
-            background-color: red; /* 배경색을 빨간색으로 설정 */
-            color: white; /* 글자색을 흰색으로 변경 */
-            padding: 10px; /* 내부 여백 설정 */
-            border: none; /* 테두리 제거 */
-            cursor: pointer; /* 마우스 포인터 변경 */
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -145,27 +149,31 @@ for ($i = 0; $i < $빈칸수; $i++) {
     <div id="board"> <!-- 보드 생성 -->
         <h3>게시글 목록</h3> <!-- 게시판 이름 설정 -->
         <table> <!-- 테이블 생성 -->
-            <thead> <!-- head랑 같은 역할 -->
-                <tr> <!-- 행 설정 -->
-                    <th>제목</th> <!-- 열 설정 -->
-                    <th>작성자</th>
-                    <th>관리</th>
+            <thead>
+                <tr>
+                    <th>순번</th> <!-- 순번 칸 -->
+                    <th>제목</th> <!-- 제목 칸 -->
+                    <th>작성 시간</th> <!-- 작성시간 칸 추가 -->
+                    <th>작성자</th> <!-- 작성자 칸 -->
+                    <th>관리</th> <!-- 수정/삭제 기능 -->
                 </tr>
             </thead>
-            <tbody> <!-- body랑 같은 역할 -->
-                <?php foreach ($게시글목록 as $row): ?> <!-- 게시글 작성 -->
+            <tbody>
+                <?php foreach ($게시글목록 as $index => $row): ?>
                     <tr>
-                        <?php if ($row): ?> <!-- 제목 : 사용자 설정. 작성자 : 로그인한 아이디 자동 입력 -->
-                            <td><?= htmlspecialchars($row['제목']) ?></td>
+                        <?php if ($row): ?>
+                            <td><?= $시작게시글번호 + $index + 1 ?></td> <!-- 순번 추가 -->
+                            <td><a href="post_view.php?id=<?= $row['id'] ?>"><?= htmlspecialchars($row['제목']) ?></a></td> <!-- 제목 클릭 시 내용 확인 -->
+                            <td><?= $row['작성시간'] ?></td> <!-- 작성시간 표시 -->
                             <td><?= htmlspecialchars($row['작성자']) ?></td>
                             <td> <!-- 수정 및 삭제 기능 구현 -->
-                                <a href="post_edit.php?id=<?= $row['id'] ?>">수정</a> |
-                                <a href="post_delete.php?id=<?= $row['id'] ?>" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+                                <?php if ($isAdmin || $row['작성자'] === $로그인한사용자): ?>
+                                    <a href="post_edit.php?id=<?= $row['id'] ?>">수정</a> |
+                                    <a href="post_delete.php?id=<?= $row['id'] ?>" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+                                <?php endif; ?>
                             </td>
-                        <?php else: ?> <!-- 화면에 빈 게시글 칸 생성 및 유지 -->
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <?php else: ?> <!-- 빈 게시글 칸 유지 -->
+                            <td></td><td></td><td></td><td></td>
                         <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>

@@ -27,10 +27,11 @@ if (!isset($_GET['id'])) {
 
 $post_id = intval($_GET['id']); // 게시물 ID 가져오기
 $로그인한사용자 = $_SESSION['사용자아이디']; // 현재 로그인한 사용자
+$isAdmin = ($로그인한사용자 === 'admin'); // 관리자 계정 여부 확인
 
 // 게시물 작성자 확인
-$sql = "SELECT 작성자 FROM 게시판 WHERE id = ?"; // 게시판 테이블에서 작성자 이름 확인
-$stmt = $conn->prepare($sql); // SQL 작업 준비
+$sql = "SELECT 작성자 FROM 게시판 WHERE id = ?";
+$stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $post_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -42,27 +43,28 @@ $row = $result->fetch_assoc();
 //     exit();
 // }
 
-// 작성자가 로그인한 사용자인지 확인
-if ($row['작성자'] !== $로그인한사용자) { // 작성자랑 아이디랑 맞지 않으면 삭제 X
-    echo "자신이 작성한 게시물만 삭제할 수 있습니다. 3초뒤 메인으로 돌아갑니다.";
-    header("Refresh: 3; url=main_page2.php"); // 3초의 시간을 두고 메인 홈으로 이동
-    exit();
-}
+// ✅ 관리자이거나, 작성자가 본인인 경우 삭제 가능
+if ($isAdmin || $row['작성자'] === $로그인한사용자) {
+    // 작성자가 맞으면 게시물 삭제 진행
+    $sql = "DELETE FROM 게시판 WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("SQL 준비 실패: " . $conn->error);
+    }
 
-// 작성자가 맞으면 게시물 삭제 진행
-$sql = "DELETE FROM 게시판 WHERE id = ?"; // 작성자와 아이디가 맞으면 삭제 진행
-$stmt = $conn->prepare($sql);
-if (!$stmt) {
-    die("SQL 준비 실패: " . $conn->error);
-}
-
-$stmt->bind_param("i", $post_id);
-if ($stmt->execute()) {
-    // 삭제 성공 시 게시판 목록으로 이동
-    header("Location: main_page2.php"); // 헤더로 메인 페이지로 이동
-    exit();
+    $stmt->bind_param("i", $post_id);
+    if ($stmt->execute()) {
+        // 삭제 성공 시 게시판 목록으로 이동
+        header("Location: main_page2.php");
+        exit();
+    } else {
+        echo "게시물 삭제 실패! 다시 시도해주세요.";
+    }
 } else {
-    echo "게시물 삭제 실패! 다시 시도해주세요.";
+    // 관리자도 아니고, 작성자도 아닌 경우 삭제 불가
+    echo "자신이 작성한 게시물만 삭제할 수 있습니다. 3초 뒤 메인으로 돌아갑니다.";
+    header("Refresh: 3; url=main_page2.php");
+    exit();
 }
 
 $stmt->close();
