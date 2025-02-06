@@ -71,8 +71,8 @@ for ($i = 0; $i < $빈칸수; $i++) {
     </head>
     <body>
         <h2>게시판</h2>
-        <p>안녕하세요 <strong><?= $로그인한사용자 ?></strong></p>
-        <a href="login3.php"><button id="logoutBtn">로그아웃</button></a>
+        <p>안녕하세요 <strong><?= $로그인한사용자 ?></strong>님</p>
+        <a href="login3.html"><button id="logoutBtn">로그아웃</button></a>
 
         <div id="board">
             <h3>게시글 목록</h3>
