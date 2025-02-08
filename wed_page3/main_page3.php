@@ -48,7 +48,7 @@ $전체게시글수 = $total_row['total']; // 총 게시글 개수 저장
 $전체페이지수 = ceil($전체게시글수 / $게시글_페이지당_개수); // 여기서 ceil함수는 반올림을 의미함. 소수점을 없애기 위함임
 
 // 현재 페이지에 해당하는 게시물 가져오기
-$sql = "SELECT 8 FROM 게시판 ORDER BY 작성시간 DESC LIMIT $시작게시글번호, $게시글_페이지당_개수";
+$sql = "SELECT * FROM 게시판 ORDER BY 작성시간 DESC LIMIT $시작게시글번호, $게시글_페이지당_개수";
 $result = $conn->query($sql);
 
 // 게시글 데이터를 배열에 저장
@@ -76,6 +76,13 @@ for ($i = 0; $i < $빈칸수; $i++) {
 
         <div id="board">
             <h3>게시글 목록</h3>
+            
+            <!-- 검색 파트 위치 -->
+            <form action="main_page3.php" method="GET">
+                <input type="text" name="search" placeholder="검색어 입력" value="<?= htmlspecialchars($검색어) ?>";
+                <button type="submit">검색</button>
+            </form>
+
             <table>
                 <thead>
                     <tr>
@@ -91,14 +98,14 @@ for ($i = 0; $i < $빈칸수; $i++) {
                         <tr>
                             <?php if ($row): ?>
                                 <td><?= $시작게시글번호 + $index + 1 ?></td>
-                                <td><a href="post_view.php?id=<?= $row['id'] ?>"><?= htmlspecialchars($row['제목']) ?></a></td>
+                                <td><a href="post_view3.php?id=<?= $row['id'] ?>"><?= htmlspecialchars($row['제목']) ?></a></td>
                                 <td><?= $row['작성시간'] ?></td>
                                 <td><?= htmlspecialchars($row['작성자']) ?></td>
                                 <td>
                                     <?php if ($isAdmin || $row['작성자'] === $로그인한사용자): ?>
-                                    <a href="post_edit.php?id=<?= $row['id'] ?>">수정</a> | 
-                                    <a href="post_delete.php?id=<?= $row['id'] ?>" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
-                                <?php endif; ?>
+                                        <a href="post_edit3.php?id=<?= $row['id'] ?>">수정</a> | 
+                                        <a href="post_delete3.php?id=<?= $row['id'] ?>" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+                                    <?php endif; ?>
                                 </td>
                             <?php else: ?>
                                 <td></td><td></td><td></td><td></td>
@@ -109,7 +116,7 @@ for ($i = 0; $i < $빈칸수; $i++) {
             </table>
         </div>
         <!-- 페이지네이션 -->
-         <div class="pagenation">
+         <div class="pagination">
             <?php 
             $페이지시작 = max(1, $현재페이지 - 2);
             $페이지끝 = min($전체페이지수, $현재페이지 + 2);
