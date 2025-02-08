@@ -88,7 +88,7 @@ for ($i = 0; $i < $빈칸수; $i++) {
 <body> <!-- 내용 파트 -->
     <h2>게시판</h2> <!-- 제목 설정 -->
     <p>안녕하세요 <strong><?= $로그인한사용자 ?></strong>님</p> <!-- 로그인한 사용자가 누구인지 표시 및 환영 메시지 도출 -->
-    <a href="logout.php"><button id="logoutBtn">로그아웃</button></a>
+    <a href="logout3.php"><button id="logoutBtn">로그아웃</button></a>
 
     <div id="board"> <!-- 게시글 표시 파트 -->
         <h3>게시글 목록</h3><!-- 제목 -->

@@ -18,7 +18,6 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // 2초 후 로그인 페이지로 이동
-header("Refresh: 2; url=login3.html");
-echo "로그아웃되었습니다! 2초 뒤 로그인 페이지로 이동합니다.";
+header("Location: login3.html");
 exit();
 ?>
