@@ -2,7 +2,7 @@
     session_start();
     # 로그인 정보 확인
     if (!isset($_SESSION['사용자아이디'])) {
-        header("Location: login3.php");
+        header("Location: login3.html");
         exit();
     }
 

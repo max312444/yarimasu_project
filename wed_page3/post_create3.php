@@ -4,7 +4,7 @@
 
     # 로그인 여부 확인
     if (!isset($_SESSION['사용자아이디'])) {
-        header('Location: login3.php');
+        header('Location: login3.html');
         exit();
     }
 
