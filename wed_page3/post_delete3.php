@@ -5,7 +5,6 @@
         header("Location: login3.html");
         exit();
     }
-
     # DB 연결 정보 확인
     $host = 'localhost';
     $user = 'jo2';
@@ -17,13 +16,11 @@
     if ($conn->connect_error) {
         die('DB 연결 실패'. $conn->connect_error);
     }
-
     # GET 요청으로 받은 게시물 ID 확인
     if (!isset($_GET['id'])) {
         echo"삭제할 게시물의 ID가 제공되지 않았습니다.";
         exit();
     }
-
 
     $post_id = intval($_GET['id']);
     $로그인한사용자 = $_SESSION['사용자아이디'];

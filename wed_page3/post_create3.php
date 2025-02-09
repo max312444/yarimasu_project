@@ -27,15 +27,15 @@
         $작성자 = $_SESSION['사용자아이디']; # 작성자는 로그인한 사람으로
         
         # SQL 쿼리
-        $sql = "INSERT INTO 게시판 (제목, 작성자, 내용) VALUES (?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        if (!$stmt) {
+        $sql = "INSERT INTO 게시판 (제목, 작성자, 내용) VALUES (?, ?, ?)"; # 새로운 데이터 추가
+        $stmt = $conn->prepare($sql); # SQL 실행 준비
+        if (!$stmt) { # 준비 여부 확인
             die("SQL 준비 실패". $conn->error);
         }
-        $stmt->bind_param("sss", $제목, $작성자, $내용);
+        $stmt->bind_param("sss", $제목, $작성자, $내용); # SQL 인젝션 방지를 위해 문자열로 바인딩
         # 게시물 등록 성공시 3초뒤에 메인 페이지로 이동
-        if ($stmt->execute()) {
-            header("Refresh:3; url=main_page3.php");
+        if ($stmt->execute()) { # 성공한 경우
+            header("Refresh:3; url=main_page3.php"); # 메인 페이지로 3초뒤에 이동
             echo "게시물이 등록되었습니다. 3초 후 메인 페이지로 이동합니다.";
             exit();
         } else {
@@ -48,7 +48,7 @@
 <!DOCTYPE html>
 <html lang="ko">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8"> <!-- byte형으로 인코딩 -->
         <title>게시물 작성</title>
     </head>
     <body>
