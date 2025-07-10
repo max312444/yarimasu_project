@@ -59,7 +59,7 @@
                 <textarea name="내용" placeholder="내용 입력" required></textarea><br>
                 <button type="submit">등록</button>
             </form>
-            <a href="main_page3.php"><button class="cancel-btn">작성취소</button></a>
+            <a href="main_page3.php"><button class="cancel-btn">작성취소</button></a> <!-- 작성 취소 버튼 생성 -->
         </div>
     </body>
 </html>

@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html lang="ko">
+<!DOCTYPE html> <!-- html 설정 시작 -->
+<html lang="ko"> <!-- 언어 한글로 설정 -->
     <head>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8"> <!-- byte 단위로 인코딩 -->
         <meta name="viewport" content="width=device=width, initial-scale=1.0">
         <title>회원가입</title>
     </head>
     <body>
         <h2>회원가입</h2>
-        <form action="signup3.php" method="POST">
+        <form action="signup3.php" method="POST"> <!-- 사용자가 입력한 정보를 signup3.php로 POST 방식으로 보냄 -->
             <input type="text" id="사용자아이디" name="사용자아이디" placeholder="아이디를 입력하세요" required><br>
             <input type="password" id="비밀번호" name="비밀번호" placeholder="비밀번호를 입력하세요" required><br>
             <input type="text" id="이름" name="이름" placeholder="이름을 입력하세요" required><br>
@@ -17,10 +17,10 @@
                 <option value="여">여</option>
             </select>
             <input type="date" id="생년월일"  name="생년월일" required><br>
-            <button type="submit">회원가입</button>
+            <button type="submit">회원가입</button> <!-- 버튼 입력 -->
         </form>
         <p>이미 회원이신가요?</p>
-        <a href="login3.html">
+        <a href="login3.html"> <!-- 가입된 아이디가 있다면 로그인 페이지로 돌아감-->
             <button type="button">로그인</button>
         </a>
     </body>

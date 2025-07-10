@@ -31,12 +31,12 @@
      $isAdmin = ($로그인한사용자 === 'admin');
 
     # 기존 게시글 가져오기
-    $sql = "SELECT * FROM 게시판 WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $게시물ID);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $게시글 = $result->fetch_assoc();
+    $sql = "SELECT * FROM 게시판 WHERE id = ?"; # 테이블에서 게시글 가져옴
+    $stmt = $conn->prepare($sql);  # SQL 작업 준비
+    $stmt->bind_param("i", $게시물ID); # int형으로 바인딩
+    $stmt->execute(); # 실행
+    $result = $stmt->get_result(); # 결과 출력
+    $게시글 = $result->fetch_assoc(); # 연관 배열로 변환
 
     # 게시글이 없으면 오류 표시
     if (!$게시글) {
